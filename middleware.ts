@@ -76,9 +76,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(
       new URL(`/home${path === "/" ? "" : path}`, req.url),
     );
-  }
-
-  if (hostname === "platforms-starter-kit0-m85q.vercel.app") {
+  } else {
     console.log(`55555555: ${hostname} path: ${path}, req.url: ${req.url}`);
     return NextResponse.rewrite(
       new URL(`/home${path === "/" ? "" : path}`, req.url),
@@ -86,5 +84,5 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite everything else to `/[domain]/[slug] dynamic route
-  return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
+  // return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
 }
