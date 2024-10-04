@@ -28,6 +28,7 @@ export default async function middleware(req: NextRequest) {
     hostname.includes("---") &&
     hostname.endsWith(`.${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`)
   ) {
+    console.log(`00000000: ${hostname}`);
     hostname = `${hostname.split("---")[0]}.${
       process.env.NEXT_PUBLIC_ROOT_DOMAIN
     }`;
@@ -42,6 +43,7 @@ export default async function middleware(req: NextRequest) {
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
     const session = await getToken({ req });
+    console.log(`11111111: ${hostname}`);
     if (!session && path !== "/login") {
       return NextResponse.redirect(new URL("/login", req.url));
     } else if (session && path == "/login") {
@@ -54,6 +56,7 @@ export default async function middleware(req: NextRequest) {
 
   // special case for `vercel.pub` domain
   if (hostname === "vercel.pub") {
+    console.log(`22222222: ${hostname}`);
     return NextResponse.redirect(
       "https://vercel.com/blog/platforms-starter-kit",
     );
@@ -64,6 +67,7 @@ export default async function middleware(req: NextRequest) {
     hostname === "localhost:3000" ||
     hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
   ) {
+    console.log(`33333333: ${hostname}`);
     return NextResponse.rewrite(
       new URL(`/home${path === "/" ? "" : path}`, req.url),
     );
