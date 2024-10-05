@@ -55,6 +55,7 @@ export default async function middleware(req: NextRequest) {
       new URL(`/app${path === "/" ? "" : path}`, req.url),
     );
   }
+  //
 
   // special case for `vercel.pub` domain
   if (hostname === "vercel.pub") {
