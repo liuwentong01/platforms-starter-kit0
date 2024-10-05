@@ -14,7 +14,6 @@ export const config = {
   ],
 };
 
-// platforms-starter-kit0-m85q.vercel.app
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
@@ -24,7 +23,7 @@ export default async function middleware(req: NextRequest) {
     .replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
   console.log(
-    `1000 Processing request for hostname: ${hostname} environment: ${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`,
+    `600 hostname: ${hostname}, '----'${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
   );
   // special case for Vercel preview deployment URLs
   if (
@@ -42,21 +41,18 @@ export default async function middleware(req: NextRequest) {
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
 
-  console.log(
-    `2000 Processing request for path: ${path} ${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
-  );
+  console.log(`601 hostname: ${hostname}, '---'${path}`);
 
   // rewrites for app pages
-  if (hostname == `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
+  if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
     const session = await getToken({ req });
-    console.log(`2001 session: ${session}`);
     if (!session && path !== "/login") {
       return NextResponse.redirect(new URL("/login", req.url));
     } else if (session && path == "/login") {
       return NextResponse.redirect(new URL("/", req.url));
     }
     return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, req.url),
+      new URL(`/app${path === "/" ? "" : path}`, req.url),
     );
   }
 
@@ -67,8 +63,6 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  console.log(`3000 hostname: ${new URL(`/${hostname}${path}`, req.url)}`);
-
   // rewrite root application to `/home` folder
   if (
     hostname === "localhost:3000" ||
@@ -77,12 +71,10 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(
       new URL(`/home${path === "/" ? "" : path}`, req.url),
     );
-  } else {
-    return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, req.url),
-    );
   }
 
+  console.log(`602 ${new URL(`/${hostname}${path}`, req.url)}`);
+
   // rewrite everything else to `/[domain]/[slug] dynamic route
-  // return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
+  return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
 }
