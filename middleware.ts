@@ -47,15 +47,16 @@ export default async function middleware(req: NextRequest) {
   );
 
   // rewrites for app pages
-  if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
+  if (hostname == `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
     const session = await getToken({ req });
+    console.log(`2001 session: ${session}`);
     if (!session && path !== "/login") {
       return NextResponse.redirect(new URL("/login", req.url));
     } else if (session && path == "/login") {
       return NextResponse.redirect(new URL("/", req.url));
     }
     return NextResponse.rewrite(
-      new URL(`/app${path === "/" ? "" : path}`, req.url),
+      new URL(`/home${path === "/" ? "" : path}`, req.url),
     );
   }
 
