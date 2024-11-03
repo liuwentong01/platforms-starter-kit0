@@ -8,6 +8,8 @@ import db from "@/lib/db";
 import { posts, sites } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
