@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { getPostsForSite } from "@/lib/fetchers";
-
+("use client");
 export default async function Sitemap() {
   const headersList = headers();
   const domain =

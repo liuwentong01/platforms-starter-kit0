@@ -6,17 +6,24 @@ import { Adapter } from "next-auth/adapters";
 import { accounts, sessions, users, verificationTokens } from "./schema";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
+console.log(
+  `700 VERCEL_DEPLOYMENT: ${process.env.AUTH_GITHUB_ID}, ${process.env.AUTH_GITHUB_SECRET}`,
+);
 export const authOptions: NextAuthOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.AUTH_GITHUB_ID as string,
       clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+      httpOptions: {
+        timeout: 10000, // 增加到10秒
+      },
       profile(profile) {
+        console.log("GitHub profile:", JSON.stringify(profile, null, 2));
         return {
           id: profile.id.toString(),
           name: profile.name || profile.login,
           gh_username: profile.login,
-          email: profile.email,
+          email: profile.email || profile.login,
           image: profile.avatar_url,
         };
       },
