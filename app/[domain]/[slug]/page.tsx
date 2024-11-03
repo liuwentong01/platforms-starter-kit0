@@ -159,20 +159,20 @@ export default async function SitePostPage({
           >
             <div className="w-full border-t border-stone-300 dark:border-stone-700" />
           </div>
-          <div className="relative flex justify-center">
+          {/* <div className="relative flex justify-center">
             <span className="bg-white px-2 text-sm text-stone-500 dark:bg-black dark:text-stone-400">
               Continue Reading
             </span>
-          </div>
+          </div> */}
         </div>
       )}
-      {data.adjacentPosts && (
+      {/* {data.adjacentPosts && (
         <div className="mx-5 mb-20 grid max-w-screen-xl grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:mx-auto xl:grid-cols-3">
           {data.adjacentPosts.map((data: any, index: number) => (
             <BlogCard key={index} data={data} />
           ))}
         </div>
-      )}
+      )} */}
     </>
   );
 }
